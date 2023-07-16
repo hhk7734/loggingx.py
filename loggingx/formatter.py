@@ -1,9 +1,8 @@
-import inspect
 import json
 import logging
 from logging import Formatter, LogRecord
 
-logging._srcfile = None  # pylint: disable=protected-access
+from loggingx.logxrecord import LogxRecord
 
 # https://docs.python.org/3/library/logging.html#logrecord-attributes
 _DEFAULT_KEYS = (
@@ -47,16 +46,12 @@ class JSONFormatter(Formatter):
             "level": _LEVEL_TO_LOWER_NAME[record.levelno],
         }
 
-        frames = inspect.getouterframes(inspect.currentframe())
-        depth = 7
-        while frames[depth].filename.endswith("logging/__init__.py"):
-            depth += 1
-
-        msg_dict["caller"] = (
-            "/".join(frames[depth].filename.split("/")[-2:]) + f":{frames[depth].lineno}"
-        )
-
         msg_dict["msg"] = record.getMessage()
+
+        if isinstance(record, LogxRecord):
+            msg_dict["caller"] = record.caller
+        else:
+            msg_dict["caller"] = "/".join(record.pathname.split("/")[-2:]) + f":{record.lineno}"
 
         # TODO: record.exc_info
         # TODO: record.exc_text
