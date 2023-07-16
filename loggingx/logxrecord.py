@@ -3,6 +3,8 @@ import json
 import logging
 from logging import LogRecord
 
+from loggingx.ctxlogger import getFields
+
 
 class LogxRecord(LogRecord):
     def __init__(
@@ -22,6 +24,7 @@ class LogxRecord(LogRecord):
         sinfo = None
 
         self.caller = "/".join(pathname.split("/")[-2:]) + f":{lineno}"
+        self.logxCtx = getFields()
 
         super().__init__(name, level, pathname, lineno, msg, args, exc_info, func, sinfo, **kwargs)
 

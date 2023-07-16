@@ -28,6 +28,8 @@ _DEFAULT_KEYS = (
     "stack_info",
     "thread",
     "threadName",
+    # LogxRecord
+    "logxCtx",
 )
 
 _LEVEL_TO_LOWER_NAME = {
@@ -50,6 +52,8 @@ class JSONFormatter(Formatter):
 
         if isinstance(record, LogxRecord):
             msg_dict["caller"] = record.caller
+            for k, v in record.logxCtx.items():
+                msg_dict[k] = v
         else:
             msg_dict["caller"] = "/".join(record.pathname.split("/")[-2:]) + f":{record.lineno}"
 
