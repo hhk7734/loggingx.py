@@ -1,62 +1,66 @@
 ## loggingx.py
 
+### Additional Format
+
+- https://docs.python.org/3/library/logging.html#logrecord-attributes
+
+| Attribute name | Format | Description |
+| --- | --- | --- |
+| caller | %(caller)s | Caller(`<pathname>:<lineno>`) |
+| ctxFields | %(ctxFields)s | Context fields |
+
+
 ### Context
 
-:warning: `ctxlogger.setCtxRecord()` sets `logging._srcfile = None` and uses the `inspect` module to get the stack frame directly.
-
 ```python
-import logging
+import loggingx
 
-from loggingx import ctxlogger
-from loggingx.formatter import JSONFormatter
-
-handler = logging.StreamHandler()
-handler.setFormatter(JSONFormatter())
-logging.basicConfig(level=logging.INFO, handlers=[handler])
-ctxlogger.setCtxRecord()
+loggingx.basicConfig(
+    level=loggingx.INFO,
+    format="%(asctime)s\t%(levelname)s\t%(caller)s\t%(message)s\t%(ctxFields)s",
+)
 
 
 def A() -> None:
-    logging.info("A")
-    with ctxlogger.addFields(A="a"):
+    loggingx.info("A")
+    with loggingx.addFields(A="a"):
         B()
 
 
 def B() -> None:
-    logging.info("B")
-    with ctxlogger.addFields(B="b"):
+    loggingx.info("B")
+    with loggingx.addFields(B="b"):
         C()
 
 
 def C() -> None:
-    logging.info("C")
+    loggingx.info("C")
 
 
 if __name__ == "__main__":
     A()
 ```
 
-```json
-{"time": 1689680850.3346911, "level": "info", "caller": "loggingx.py/main.py:13", "msg": "A"}
-{"time": 1689680850.3349278, "level": "info", "caller": "loggingx.py/main.py:19", "msg": "B", "A": "a"}
-{"time": 1689680850.3351411, "level": "info", "caller": "loggingx.py/main.py:25", "msg": "C", "A": "a", "B": "b"}
+```shell
+2023-07-19 01:15:33,981 INFO    loggingx.py/main.py:10  A       {}
+2023-07-19 01:15:33,981 INFO    loggingx.py/main.py:16  B       {'A': 'a'}
+2023-07-19 01:15:33,982 INFO    loggingx.py/main.py:22  C       {'A': 'a', 'B': 'b'}
 ```
 
 ### JSONFormatter
 
 ```python
-import logging
+import loggingx
 
-from loggingx.formatter import JSONFormatter
-
-handler = logging.StreamHandler()
-handler.setFormatter(JSONFormatter())
-logging.basicConfig(level=logging.INFO, handlers=[handler])
+handler = loggingx.StreamHandler()
+handler.setFormatter(loggingx.JSONFormatter())
+loggingx.basicConfig(level=loggingx.INFO, handlers=[handler])
 
 if __name__ == "__main__":
-    logging.info("test", extra={"test": "test"})
+    with loggingx.addFields(ctx="ctx"):
+        loggingx.info("test", extra={"extra": "extra"})
 ```
 
 ```json
-{"time": 1689680910.3116627, "level": "info", "caller": "loggingx.py/main.py:10", "msg": "test", "test": "test"}
+{"time": 1689697694.9980711, "level": "info", "caller": "loggingx.py/main.py:9", "msg": "test", "ctx": "ctx", "extra": "extra"}
 ```
