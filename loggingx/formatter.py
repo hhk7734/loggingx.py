@@ -2,7 +2,7 @@ import json
 import logging
 from logging import Formatter, LogRecord
 
-from loggingx.logxrecord import LogxRecord
+from loggingx.ctxlogger import CtxRecord
 
 # https://docs.python.org/3/library/logging.html#logrecord-attributes
 _DEFAULT_KEYS = (
@@ -28,8 +28,8 @@ _DEFAULT_KEYS = (
     "stack_info",
     "thread",
     "threadName",
-    # LogxRecord
-    "logxCtx",
+    # CtxRecord
+    "ctxFields",
 )
 
 _LEVEL_TO_LOWER_NAME = {
@@ -50,9 +50,9 @@ class JSONFormatter(Formatter):
 
         msg_dict["msg"] = record.getMessage()
 
-        if isinstance(record, LogxRecord):
+        if isinstance(record, CtxRecord):
             msg_dict["caller"] = record.caller
-            for k, v in record.logxCtx.items():
+            for k, v in record.ctxFields.items():
                 msg_dict[k] = v
         else:
             msg_dict["caller"] = "/".join(record.pathname.split("/")[-2:]) + f":{record.lineno}"
