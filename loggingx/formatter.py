@@ -48,14 +48,14 @@ class JSONFormatter(Formatter):
             "level": _LEVEL_TO_LOWER_NAME[record.levelno],
         }
 
-        msg_dict["msg"] = record.getMessage()
-
         if isinstance(record, CtxRecord):
             msg_dict["caller"] = record.caller
+            msg_dict["msg"] = record.getMessage()
             for k, v in record.ctxFields.items():
                 msg_dict[k] = v
         else:
             msg_dict["caller"] = "/".join(record.pathname.split("/")[-2:]) + f":{record.lineno}"
+            msg_dict["msg"] = record.getMessage()
 
         # TODO: record.exc_info
         # TODO: record.exc_text
