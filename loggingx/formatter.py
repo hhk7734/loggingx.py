@@ -1,4 +1,5 @@
 import json
+import logging
 from logging import Formatter
 
 from loggingx.context import CtxRecord
@@ -32,12 +33,21 @@ _DEFAULT_KEYS = (
     "ctxFields",
 )
 
+_LEVEL_TO_LOWER_NAME = {
+    logging.CRITICAL: "fatal",
+    logging.ERROR: "error",
+    logging.WARNING: "warn",
+    logging.INFO: "info",
+    logging.DEBUG: "debug",
+    logging.NOTSET: "notset",
+}
+
 
 class JSONFormatter(Formatter):
     def format(self, record: CtxRecord) -> str:
         msg_dict = {
             "time": record.created,
-            "level": record.levelname,
+            "level": _LEVEL_TO_LOWER_NAME[record.levelno],
         }
 
         msg_dict["caller"] = record.caller
