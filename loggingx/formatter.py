@@ -60,9 +60,7 @@ class JSONFormatter(Formatter):
         # TODO: record.stack_info
 
         # extra
-        if (extra := record.__dict__.get("extra", None)) is None:
-            extra = record.__dict__
-        for k, v in extra.items():
+        for k, v in record.__dict__.items():
             if k not in _DEFAULT_KEYS and not k.startswith("_"):
                 msg_dict[k] = v
 
