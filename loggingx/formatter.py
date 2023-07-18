@@ -1,8 +1,7 @@
 import json
-import logging
-from logging import Formatter, LogRecord
+from logging import Formatter
 
-from loggingx.ctxlogger import CtxRecord
+from loggingx.context import CtxRecord
 
 # https://docs.python.org/3/library/logging.html#logrecord-attributes
 _DEFAULT_KEYS = (
@@ -29,33 +28,22 @@ _DEFAULT_KEYS = (
     "thread",
     "threadName",
     # CtxRecord
+    "caller",
     "ctxFields",
 )
 
-_LEVEL_TO_LOWER_NAME = {
-    logging.CRITICAL: "fatal",
-    logging.ERROR: "error",
-    logging.WARNING: "warn",
-    logging.INFO: "info",
-    logging.DEBUG: "debug",
-}
-
 
 class JSONFormatter(Formatter):
-    def format(self, record: LogRecord) -> str:
+    def format(self, record: CtxRecord) -> str:
         msg_dict = {
             "time": record.created,
-            "level": _LEVEL_TO_LOWER_NAME[record.levelno],
+            "level": record.levelname,
         }
 
-        if isinstance(record, CtxRecord):
-            msg_dict["caller"] = record.caller
-            msg_dict["msg"] = record.getMessage()
-            for k, v in record.ctxFields.items():
-                msg_dict[k] = v
-        else:
-            msg_dict["caller"] = "/".join(record.pathname.split("/")[-2:]) + f":{record.lineno}"
-            msg_dict["msg"] = record.getMessage()
+        msg_dict["caller"] = record.caller
+        msg_dict["msg"] = record.getMessage()
+        for k, v in record.ctxFields.items():
+            msg_dict[k] = v
 
         # TODO: record.exc_info
         # TODO: record.exc_text
