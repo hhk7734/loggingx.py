@@ -1,5 +1,7 @@
 ## loggingx.py
 
+`loggingx` is a drop-in replacement for Python's built-in `logging` module. Even better, once you've imported `loggingx`, you don't need to modify your existing `logging` module.
+
 ### Additional Format
 
 - https://docs.python.org/3/library/logging.html#logrecord-attributes
@@ -63,4 +65,24 @@ if __name__ == "__main__":
 
 ```json
 {"time": 1689697694.9980711, "level": "info", "caller": "loggingx.py/main.py:9", "msg": "test", "ctx": "ctx", "extra": "extra"}
+```
+
+### With `logging`
+
+```python
+import logging
+
+import loggingx
+
+# handler = loggingx.StreamHandler()
+handler = logging.StreamHandler()
+handler.setFormatter(loggingx.JSONFormatter())
+
+# loggingx.basicConfig(level=loggingx.INFO, handlers=[handler])
+logging.basicConfig(level=logging.INFO, handlers=[handler])
+
+if __name__ == "__main__":
+    with loggingx.addFields(ctx="ctx"):
+        # loggingx.info("test", extra={"extra": "extra"})
+        logging.info("test", extra={"extra": "extra"})
 ```
