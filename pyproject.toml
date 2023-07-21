@@ -1,14 +1,36 @@
+[project]
+name = "loggingx-py"
+description = "Helper for Contextual and Structured Logging in Python with logging"
+authors = [{ name = "Hyeonki Hong", email = "hhk7734@gmail.com" }]
+requires-python = ">=3.10,<4.0"
+
+dynamic = ["version"]
+
+license = { file = "LICENSE" }
+readme = "README.md"
+keywords = ["logging", "contextual-logging", "structured-logging"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+]
+
+[project.urls]
+repository = "https://github.com/hhk7734/loggingx.py"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[tool.setuptools.packages.find]
+include = ["loggingx"]
+
 [tool.poetry]
 name = "loggingx-py"
-version = "0.2.0"
-description = "Helper for Contextual and Structured Logging in Python with logging"
+version = "0"
+description = ""
 authors = ["Hyeonki Hong <hhk7734@gmail.com>"]
-packages = [{ include = "loggingx" }]
-license = "MIT"
-readme = "README.md"
-repository = "https://github.com/hhk7734/loggingx.py"
-keywords = ["logging", "contextual-logging", "structured-logging"]
-classifiers = ["Intended Audience :: Developers"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
@@ -18,10 +40,6 @@ mypy = "^1.4.1"
 black = "^23.7.0"
 isort = "^5.12.0"
 pylint = "^2.17.4"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 exclude = '''
