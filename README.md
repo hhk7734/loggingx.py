@@ -2,6 +2,10 @@
 
 `loggingx` is a drop-in replacement for Python's built-in `logging` module. Even better, once you've imported `loggingx`, you don't need to modify your existing `logging` module.
 
+```shell
+python3 -m pip install loggingx-py
+```
+
 ### Additional Format
 
 - https://docs.python.org/3/library/logging.html#logrecord-attributes
