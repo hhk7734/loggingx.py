@@ -10,37 +10,45 @@ python3 -m pip install loggingx-py
 
 - https://docs.python.org/3/library/logging.html#logrecord-attributes
 
-| Attribute name | Format | Description |
-| --- | --- | --- |
-| caller | %(caller)s | Caller(`<pathname>:<lineno>`) |
-| ctxFields | %(ctxFields)s | Context fields |
+| Attribute name | Format        | Description                   |
+| -------------- | ------------- | ----------------------------- |
+| caller         | %(caller)s    | Caller(`<pathname>:<lineno>`) |
+| ctxFields      | %(ctxFields)s | Context fields                |
+
+### Optimization
+
+| Configuration                | Description                                                    |
+| ---------------------------- | -------------------------------------------------------------- |
+| `logging.logThreads`         | If `False`, Record will not collect `thread` and `threadName`. |
+| `logging.logProcesses`       | If `False`, Record will not collect `process`.                 |
+| `logging.logMultiprocessing` | If `False`, Record will not collect `processName`.             |
 
 
 ### Context
 
 ```python
-import loggingx
+import loggingx as logging
 
-loggingx.basicConfig(
-    level=loggingx.INFO,
+logging.basicConfig(
+    level=logging.INFO,
     format="%(asctime)s\t%(levelname)s\t%(caller)s\t%(message)s\t%(ctxFields)s",
 )
 
 
 def A() -> None:
-    loggingx.info("A")
-    with loggingx.addFields(A="a"):
+    logging.info("A")
+    with logging.addFields(A="a"):
         B()
 
 
 def B() -> None:
-    loggingx.info("B")
-    with loggingx.addFields(B="b"):
+    logging.info("B")
+    with logging.addFields(B="b"):
         C()
 
 
 def C() -> None:
-    loggingx.info("C")
+    logging.info("C")
 
 
 if __name__ == "__main__":
@@ -56,15 +64,15 @@ if __name__ == "__main__":
 ### JSONFormatter
 
 ```python
-import loggingx
+import loggingx as logging
 
-handler = loggingx.StreamHandler()
-handler.setFormatter(loggingx.JSONFormatter())
-loggingx.basicConfig(level=loggingx.INFO, handlers=[handler])
+handler = logging.StreamHandler()
+handler.setFormatter(logging.JSONFormatter())
+logging.basicConfig(level=logging.INFO, handlers=[handler])
 
 if __name__ == "__main__":
-    with loggingx.addFields(ctx="ctx"):
-        loggingx.info("test", extra={"extra": "extra"})
+    with logging.addFields(ctx="ctx"):
+        logging.info("test", extra={"extra": "extra"})
 ```
 
 ```json
