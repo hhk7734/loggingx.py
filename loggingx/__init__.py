@@ -6,7 +6,8 @@ from loggingx.context import addFields
 from loggingx.formatter import JSONFormatter
 
 try:
-    __version__ = version("logginx")
+    __version__ = version("loggingx-py")
+
 except PackageNotFoundError:
     pass
 
