@@ -23,8 +23,14 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
 
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.package-data]
+"*" = ["py.typed", "*.pyi"]
+
 [tool.setuptools.packages.find]
-include = ["loggingx"]
+include = ["loggingx", "loggingx.*"]
 
 [tool.poetry]
 name = "loggingx-py"
