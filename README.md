@@ -98,3 +98,13 @@ if __name__ == "__main__":
         # loggingx.info("test", extra={"extra": "extra"})
         logging.info("test", extra={"extra": "extra"})
 ```
+
+### jq
+
+```shell
+alias log2jq="jq -R -r '. as \$line | try fromjson catch \$line'"
+```
+
+```shell
+python3 <path> 2>&1 | log2jq
+```
