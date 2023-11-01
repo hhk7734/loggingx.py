@@ -1,5 +1,7 @@
 import json
 import logging
+import re
+from enum import Enum
 from logging import Formatter
 
 from loggingx.context import CtxRecord
@@ -22,12 +24,8 @@ _DEFAULT_KEYS = (
     "msg",
     "name",
     "pathname",
-    "process",
-    "processName",
     "relativeCreated",
     "stack_info",
-    "thread",
-    "threadName",
     # CtxRecord
     "caller",
     "ctxFields",
@@ -43,7 +41,29 @@ _LEVEL_TO_LOWER_NAME = {
 }
 
 
+class Information(str, Enum):
+    THREAD = "thread"
+    THREAD_NAME = "threadName"
+    PROCESS = "process"
+    PROCESS_NAME = "processName"
+
+
 class JSONFormatter(Formatter):
+    def __init__(
+        self,
+        additional_infos: Information | list[Information] | None = None,
+    ) -> None:
+        super().__init__()
+        if additional_infos is None:
+            additional_infos = []
+        elif isinstance(additional_infos, Information):
+            additional_infos = [additional_infos]
+
+        self._excludes = {x.value for x in Information if x not in additional_infos}
+        self._key_map = {
+            x.value: re.sub(r"(?<!^)(?=[A-Z])", "_", x.value).lower() for x in additional_infos
+        }
+
     def format(self, record: CtxRecord) -> str:  # type: ignore[override]
         msg_dict = {
             "time": record.created,
@@ -57,8 +77,15 @@ class JSONFormatter(Formatter):
 
         # extra
         for k, v in record.__dict__.items():
-            if k not in _DEFAULT_KEYS and not k.startswith("_"):
-                msg_dict[k] = v
+            if k in _DEFAULT_KEYS:
+                continue
+            if k.startswith("_"):
+                continue
+            if k in self._excludes:
+                continue
+            if k in self._key_map:
+                k = self._key_map[k]
+            msg_dict[k] = v
 
         if record.exc_info:
             # Cache the traceback text to avoid converting it multiple times

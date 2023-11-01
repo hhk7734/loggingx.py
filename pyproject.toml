@@ -41,6 +41,9 @@ authors = ["Hyeonki Hong <hhk7734@gmail.com>"]
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 
+[tool.poetry.group.dev]
+optional = true
+
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.4.1"
 black = "^23.7.0"

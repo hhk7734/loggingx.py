@@ -67,7 +67,8 @@ if __name__ == "__main__":
 import loggingx as logging
 
 handler = logging.StreamHandler()
-handler.setFormatter(logging.JSONFormatter())
+# handler.setFormatter(logging.JSONFormatter())
+handler.setFormatter(logging.JSONFormatter(logging.Information.THREAD_NAME))
 logging.basicConfig(level=logging.INFO, handlers=[handler])
 
 if __name__ == "__main__":
@@ -76,7 +77,7 @@ if __name__ == "__main__":
 ```
 
 ```json
-{"time": 1689697694.9980711, "level": "info", "caller": "loggingx.py/main.py:9", "msg": "test", "ctx": "ctx", "extra": "extra"}
+{"time": 1689697694.9980711, "level": "info", "caller": "loggingx.py/main.py:9", "msg": "test", "ctx": "ctx", "thread_name": "MainThread", "extra": "extra"}
 ```
 
 ### With `logging`
