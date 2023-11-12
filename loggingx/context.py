@@ -3,15 +3,15 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from logging import LogRecord
 from types import TracebackType
-from typing import Any, Generator, Mapping, TypeAlias
+from typing import Any, Dict, Generator, Mapping, Optional, Tuple, Type, Union
 
-_SysExcInfoType: TypeAlias = (
-    tuple[type[BaseException], BaseException, TracebackType | None] | tuple[None, None, None]
-)
-_ArgsType: TypeAlias = tuple[object, ...] | Mapping[str, object]
+_SysExcInfoType = Union[
+    Tuple[Type[BaseException], BaseException, Optional[TracebackType]], Tuple[None, None, None]
+]
+_ArgsType = Union[Tuple[object, ...], Mapping[str, object]]
 
 
-_ctx = ContextVar[dict[str, Any]]("loggingxCtx", default={})
+_ctx = ContextVar[Dict[str, Any]]("loggingxCtx", default={})
 
 
 @contextmanager
@@ -32,10 +32,10 @@ class CtxRecord(LogRecord):
         pathname: str,
         lineno: int,
         msg: object,
-        args: _ArgsType | None,
-        exc_info: _SysExcInfoType | None,
-        func: str | None = None,
-        sinfo: str | None = None,
+        args: Optional[_ArgsType],
+        exc_info: Optional[_SysExcInfoType],
+        func: Optional[str] = None,
+        sinfo: Optional[str] = None,
         **kwargs,
     ):
         super().__init__(

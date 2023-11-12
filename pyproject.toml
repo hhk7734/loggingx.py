@@ -2,7 +2,7 @@
 name = "loggingx-py"
 description = "Drop-in replacement for Python's built-in `logging` module"
 authors = [{ name = "Hyeonki Hong", email = "hhk7734@gmail.com" }]
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.8,<4.0"
 
 dynamic = ["version"]
 
@@ -39,7 +39,7 @@ description = ""
 authors = ["Hyeonki Hong <hhk7734@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<4.0"
+python = ">=3.8,<4.0"
 
 [tool.poetry.group.dev]
 optional = true

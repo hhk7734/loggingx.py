@@ -3,6 +3,7 @@ import logging
 import re
 from enum import Enum
 from logging import Formatter
+from typing import List, Union
 
 from loggingx.context import CtxRecord
 
@@ -51,7 +52,7 @@ class Information(str, Enum):
 class JSONFormatter(Formatter):
     def __init__(
         self,
-        additional_infos: Information | list[Information] | None = None,
+        additional_infos: Union[Information, List[Information], None] = None,
     ) -> None:
         super().__init__()
         if additional_infos is None:
