@@ -23,7 +23,6 @@ _DEFAULT_KEYS = (
     "msecs",
     "message",
     "msg",
-    "name",
     "pathname",
     "relativeCreated",
     "stack_info",
@@ -43,6 +42,7 @@ _LEVEL_TO_LOWER_NAME = {
 
 
 class Information(str, Enum):
+    NAME = "name"
     THREAD = "thread"
     THREAD_NAME = "threadName"
     PROCESS = "process"
