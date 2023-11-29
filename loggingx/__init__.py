@@ -1,3 +1,4 @@
+import logging as _logging
 from importlib.metadata import PackageNotFoundError, version
 from logging import *
 
@@ -10,6 +11,9 @@ try:
 
 except PackageNotFoundError:
     pass
+
+__all__ = _logging.__all__.copy()
+__all__ += ["addFields", "Information", "JSONFormatter"]
 
 
 setLogRecordFactory(_CtxRecord)
