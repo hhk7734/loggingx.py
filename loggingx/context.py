@@ -5,9 +5,7 @@ from logging import LogRecord
 from types import TracebackType
 from typing import Any, Dict, Generator, Mapping, Optional, Tuple, Type, Union
 
-_SysExcInfoType = Union[
-    Tuple[Type[BaseException], BaseException, Optional[TracebackType]], Tuple[None, None, None]
-]
+_SysExcInfoType = Union[Tuple[Type[BaseException], BaseException, Optional[TracebackType]], Tuple[None, None, None]]
 _ArgsType = Union[Tuple[object, ...], Mapping[str, object]]
 
 
