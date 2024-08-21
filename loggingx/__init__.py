@@ -1,10 +1,10 @@
 import logging as _logging
 from importlib.metadata import PackageNotFoundError, version
-from logging import *
+from logging import *  # noqa: F403
 
-from loggingx.context import CtxRecord as _CtxRecord
-from loggingx.context import addFields
-from loggingx.formatter import Information, JSONFormatter
+from .context import CtxRecord as _CtxRecord
+from .context import addFields
+from .formatter import Information, JSONFormatter
 
 try:
     __version__ = version("loggingx-py")
@@ -16,4 +16,4 @@ __all__ = _logging.__all__.copy()
 __all__ += ["addFields", "Information", "JSONFormatter"]
 
 
-setLogRecordFactory(_CtxRecord)
+setLogRecordFactory(_CtxRecord)  # noqa: F405

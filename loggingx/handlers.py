@@ -1,1 +1,1 @@
-from logging.handlers import *  # pylint: disable=unused-wildcard-import,wildcard-import
+from logging.handlers import *  # noqa: F403

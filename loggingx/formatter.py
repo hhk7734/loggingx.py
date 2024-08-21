@@ -61,9 +61,7 @@ class JSONFormatter(Formatter):
             additional_infos = [additional_infos]
 
         self._excludes = {x.value for x in Information if x not in additional_infos}
-        self._key_map = {
-            x.value: re.sub(r"(?<!^)(?=[A-Z])", "_", x.value).lower() for x in additional_infos
-        }
+        self._key_map = {x.value: re.sub(r"(?<!^)(?=[A-Z])", "_", x.value).lower() for x in additional_infos}
 
     def format(self, record: CtxRecord) -> str:  # type: ignore[override]
         msg_dict = {

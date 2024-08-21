@@ -1,1 +1,1 @@
-from logging.config import *  # pylint: disable=unused-wildcard-import,wildcard-import
+from logging.config import *  # noqa: F403
