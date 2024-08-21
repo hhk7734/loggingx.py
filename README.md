@@ -2,7 +2,7 @@
 ![pypi](https://img.shields.io/pypi/v/loggingx-py)
 ![language](https://img.shields.io/github/languages/top/hhk7734/loggingx.py)
 
-## loggingx.py
+# loggingx.py
 
 `loggingx` is a drop-in replacement for Python's built-in `logging` module. Even better, once you've imported `loggingx`, you don't need to modify your existing `logging` module.
 
@@ -10,7 +10,7 @@
 python3 -m pip install loggingx-py
 ```
 
-### Additional Format
+## Additional Format
 
 - https://docs.python.org/3/library/logging.html#logrecord-attributes
 
@@ -19,7 +19,7 @@ python3 -m pip install loggingx-py
 | caller         | %(caller)s    | Caller(`<pathname>:<lineno>`) |
 | ctxFields      | %(ctxFields)s | Context fields                |
 
-### Optimization
+## Optimization
 
 | Configuration                | Description                                                    |
 | ---------------------------- | -------------------------------------------------------------- |
@@ -28,15 +28,14 @@ python3 -m pip install loggingx-py
 | `logging.logMultiprocessing` | If `False`, Record will not collect `processName`.             |
 
 
-### Context
+## Context
 
 ```python
 import loggingx as logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s\t%(levelname)s\t%(caller)s\t%(message)s\t%(ctxFields)s",
-)
+handler = logging.StreamHandler()
+handler.setFormatter(logging.ConsoleFormatter())
+logging.basicConfig(level=logging.INFO, handlers=[handler])
 
 
 def A() -> None:
@@ -60,10 +59,12 @@ if __name__ == "__main__":
 ```
 
 ```shell
-2023-07-19 01:15:33,981 INFO    loggingx.py/main.py:10  A       {}
-2023-07-19 01:15:33,981 INFO    loggingx.py/main.py:16  B       {'A': 'a'}
-2023-07-19 01:15:33,982 INFO    loggingx.py/main.py:22  C       {'A': 'a', 'B': 'b'}
+2024-08-22T02:46:38.257+09:00 INFO   main.py:9  A {}
+2024-08-22T02:46:38.257+09:00 INFO   main.py:15 B {"A": "a"}
+2024-08-22T02:46:38.258+09:00 INFO   main.py:21 C {"A": "a", "B": "b"}
 ```
+
+## Formatter
 
 ### JSONFormatter
 
@@ -84,7 +85,7 @@ if __name__ == "__main__":
 {
   "time": 1689697694.9980711,
   "level": "info",
-  "caller": "loggingx.py/main.py:10",
+  "caller": "main.py:10",
   "msg": "test",
   "ctx": "ctx",
   "thread_name": "MainThread",
@@ -92,7 +93,25 @@ if __name__ == "__main__":
 }
 ```
 
-### With `logging`
+### ConsoleFormatter
+
+```python
+import loggingx as logging
+
+handler = logging.StreamHandler()
+handler.setFormatter(logging.ConsoleFormatter())
+logging.basicConfig(level=logging.INFO, handlers=[handler])
+
+if __name__ == "__main__":
+    with logging.addFields(ctx="ctx"):
+        logging.info("test", extra={"extra": "extra"})
+```
+
+```shell
+2024-08-22T02:48:17.868+09:00 INFO   main.py:9  test {"ctx": "ctx", "extra": "extra"}
+```
+
+## With `logging`
 
 ```python
 import logging
@@ -112,7 +131,7 @@ if __name__ == "__main__":
         logging.info("test", extra={"extra": "extra"})
 ```
 
-### jq
+## jq
 
 ```shell
 alias log2jq="jq -rRC --unbuffered '. as \$line | try fromjson catch \$line' | sed 's/\\\\n/\\n/g; s/\\\\t/\\t/g'"
