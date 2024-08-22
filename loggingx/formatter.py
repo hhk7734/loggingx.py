@@ -1,6 +1,6 @@
 import logging
 import re
-from datetime import datetime, timezone
+from datetime import datetime
 from enum import Enum
 from logging import Formatter
 from typing import List, Union
@@ -127,7 +127,7 @@ class ConsoleFormatter(Formatter):
         self._color = color
 
     def format(self, record: CtxRecord) -> str:  # type: ignore[override]
-        rfc3339 = datetime.now(timezone.utc).astimezone().isoformat(sep="T", timespec="milliseconds")
+        rfc3339 = datetime.fromtimestamp(record.created).astimezone().isoformat(sep="T", timespec="milliseconds")
 
         extra = {}
         for k, v in record.ctxFields.items():
