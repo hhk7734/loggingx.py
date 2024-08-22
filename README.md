@@ -131,6 +131,10 @@ if __name__ == "__main__":
         logging.info("test", extra={"extra": "extra"})
 ```
 
+## orjson
+
+If `orjson` is installed, this module will use `orjson` instead of `json`.
+
 ## jq
 
 ```shell
