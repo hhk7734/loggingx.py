@@ -50,6 +50,8 @@ class Information(str, Enum):
     THREAD_NAME = "threadName"
     PROCESS = "process"
     PROCESS_NAME = "processName"
+    # taskName is added in Python 3.12
+    TASK_NAME = "taskName"
 
 
 class JSONFormatter(Formatter):
