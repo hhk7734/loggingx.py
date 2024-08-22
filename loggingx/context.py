@@ -1,9 +1,10 @@
-import json
 from contextlib import contextmanager
 from contextvars import ContextVar
 from logging import LogRecord
 from types import TracebackType
 from typing import Any, Dict, Generator, Mapping, Optional, Tuple, Type, Union
+
+from . import json
 
 _SysExcInfoType = Union[Tuple[Type[BaseException], BaseException, Optional[TracebackType]], Tuple[None, None, None]]
 _ArgsType = Union[Tuple[object, ...], Mapping[str, object]]
@@ -52,4 +53,4 @@ class CtxRecord(LogRecord):
         self.ctxFields = _ctx.get()
 
     def __repr__(self):
-        return json.dumps(self.__dict__, ensure_ascii=False)
+        return json.dumps(self.__dict__)

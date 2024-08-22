@@ -46,6 +46,7 @@ python = ">=3.8,<4.0"
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.11.1"
 ruff = "^0.6.1"
+orjson = "^3.10.7"
 
 
 [tool.ruff]

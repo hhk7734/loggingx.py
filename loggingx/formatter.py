@@ -1,4 +1,3 @@
-import json
 import logging
 import re
 from datetime import datetime, timezone
@@ -6,6 +5,7 @@ from enum import Enum
 from logging import Formatter
 from typing import List, Union
 
+from . import json
 from .context import CtxRecord
 
 # https://docs.python.org/3/library/logging.html#logrecord-attributes
@@ -100,8 +100,7 @@ class JSONFormatter(Formatter):
         if record.stack_info:
             msg_dict["stack_info"] = self.formatStack(record.stack_info)
 
-        # Set ensure_ascii to False to output the message as it is typed.
-        return json.dumps(msg_dict, ensure_ascii=False)
+        return json.dumps(msg_dict)
 
 
 _RESET = "\033[0m"
@@ -160,7 +159,7 @@ class ConsoleFormatter(Formatter):
                 reset = _RESET
 
         # Set ensure_ascii to False to output the message as it is typed.
-        msg = f"{rfc3339} {color}{_LEVEL_TO_UPPER_NAME[record.levelno]:<6}{reset} {record.caller}\t{record.getMessage()} {json.dumps(extra, ensure_ascii=False)}"
+        msg = f"{rfc3339} {color}{_LEVEL_TO_UPPER_NAME[record.levelno]:<6}{reset} {record.caller}\t{record.getMessage()} {json.dumps(extra)}"
 
         if record.exc_info:
             # Cache the traceback text to avoid converting it multiple times
