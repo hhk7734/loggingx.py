@@ -15,7 +15,3 @@ def test_json_dumps() -> None:
 def test_orjson_dumps() -> None:
     for input, expected in dump_cases:
         assert _orjson_dumps({"a": input}) == f'{{"a":"{expected}"}}'
-
-
-def test_dumps() -> None:
-    assert 0
